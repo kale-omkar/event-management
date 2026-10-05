@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Plan Unforgettable Events">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#4338ca"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="311" cy="319" r="231" fill="url(#glow)"/>
+  <circle cx="787" cy="417" r="137" fill="url(#glow)"/>
+  <rect y="640" width="1200" height="160" fill="#0f172a" opacity="0.35"/>
+  <text x="600" y="700" fill="#ffffff" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="700">Plan Unforgettable Events</text>
+  <text x="600" y="752" fill="#7c3aed" text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="26"
+        letter-spacing="3">HERO</text>
+</svg>

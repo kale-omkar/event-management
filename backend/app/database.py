@@ -1,20 +1,24 @@
-import os
+"""Database engine, session factory and the FastAPI `get_db` dependency."""
+
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-load_dotenv()
+from app.config import settings
 
-# Ensure you update the DATABASE_URL in the .env file with your actual MySQL credentials
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./sql_app.db")
+# The MySQL connection URL is assembled from the DB_* environment variables.
+# See app/config.py and backend/.env.example.
+engine = create_engine(settings.database_url, pool_pre_ping=True)
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+# Every request gets its own session; autocommit is off so we control commits.
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# Base class that all SQLAlchemy models inherit from. `Base.metadata` is what
+# `create_all` uses to work out which tables to create.
 Base = declarative_base()
 
+
 def get_db():
+    """FastAPI dependency that yields a database session and always closes it."""
     db = SessionLocal()
     try:
         yield db
