@@ -1,6 +1,10 @@
 fastapi
-uvicorn
+uvicorn[standard]
 sqlalchemy
 pymysql
-pydantic
+cryptography
 python-dotenv
+pydantic
+pydantic-settings
+# Required by Pydantic's EmailStr - without this, importing the schemas fails.
+email-validator

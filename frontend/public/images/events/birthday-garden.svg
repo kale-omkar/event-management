@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Garden Birthday Party">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c2d12"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fed7aa" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#fed7aa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="342" cy="198" r="152" fill="url(#glow)"/>
+  <circle cx="854" cy="494" r="184" fill="url(#glow)"/>
+  <rect y="640" width="1200" height="160" fill="#7c2d12" opacity="0.35"/>
+  <text x="600" y="700" fill="#ffffff" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="700">Garden Birthday Party</text>
+  <text x="600" y="752" fill="#fed7aa" text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="26"
+        letter-spacing="3">EVENT</text>
+</svg>

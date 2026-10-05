@@ -1,86 +1,139 @@
--- Phase 2: MySQL Database Schema for Event Management
+-- =============================================================================
+-- Event Management - MySQL schema
+--
+-- How to run this file:
+--   mysql -u root -p < database/schema.sql
+-- or paste it into MySQL Workbench / phpMyAdmin.
+--
+-- Then import the same credentials into backend/.env:
+--   DB_NAME=event_management
+--
+-- NOTE: the DROP statements below reset the tables. Remove them if you have
+-- data you want to keep.
+--
+-- All prices are in Indian Rupees (INR). The frontend formats them with
+-- Intl.NumberFormat('en-IN', { currency: 'INR' }) so they render as ₹1,50,000.
+-- =============================================================================
 
+CREATE DATABASE IF NOT EXISTS event_management
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE event_management;
+
+DROP TABLE IF EXISTS contact_messages;
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS events;
+
+-- -----------------------------------------------------------------------------
+-- events
+-- Kept in sync with backend/app/models/event.py
+-- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS events (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    category VARCHAR(100) NOT NULL,
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    title       VARCHAR(255) NOT NULL,
     description TEXT,
-    event_date DATE NOT NULL,
-    event_time TIME NOT NULL,
-    venue VARCHAR(255) NOT NULL,
-    image_url VARCHAR(255),
-    status VARCHAR(50) DEFAULT 'upcoming',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    category    VARCHAR(100) NOT NULL DEFAULT 'General',
+    date        DATETIME     NOT NULL,
+    location    VARCHAR(255) NOT NULL,
+    price       DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    inclusions  TEXT,
+    image_url   VARCHAR(500),
+    created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_events_category (category),
+    INDEX idx_events_date (date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS services (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    image_url VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
+-- -----------------------------------------------------------------------------
+-- bookings
+-- event_id is nullable: a booking may be a general enquiry with no event.
+-- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS bookings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    event_type VARCHAR(100) NOT NULL,
-    preferred_date DATE NOT NULL,
-    guests INT NOT NULL,
-    message TEXT,
-    status VARCHAR(50) DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    event_id    INT          NULL,
+    name        VARCHAR(255) NOT NULL,
+    email       VARCHAR(255) NOT NULL,
+    phone       VARCHAR(15)  NOT NULL,
+    event_type  VARCHAR(100) NOT NULL,
+    event_date  DATE         NOT NULL,
+    guests      INT          NOT NULL DEFAULT 1,
+    message     TEXT,
+    status      VARCHAR(20)  NOT NULL DEFAULT 'pending',
+    created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_bookings_email (email),
+    FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS contacts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- -----------------------------------------------------------------------------
+-- contact_messages
+-- Messages sent through the Contact form.
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS contact_messages (
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    name       VARCHAR(255) NOT NULL,
+    email      VARCHAR(255) NOT NULL,
+    subject    VARCHAR(255),
+    message    TEXT         NOT NULL,
+    created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_contact_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS testimonials (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    designation VARCHAR(255),
-    message TEXT NOT NULL,
-    rating INT NOT NULL,
-    image_url VARCHAR(255)
-);
+-- =============================================================================
+-- Sample events: 9 events across 4 categories, INR prices.
+-- The backend also seeds these automatically when the table is empty, so you
+-- only need this file if you want to populate a fresh database by hand.
+-- =============================================================================
+INSERT INTO events (title, description, category, date, location, price, inclusions, image_url) VALUES
+('Grand Indian Wedding Celebration',
+ 'A three-day wedding with mehndi, sangeet and a full reception for up to 500 guests. Includes venue, decor, catering and an on-site event manager.',
+ 'Wedding', '2026-11-14 18:00:00', 'The Grand Palace Hall, Mumbai', 150000.00,
+ 'Venue hire for 3 days\nCatering for 500 guests\nFloral & stage decor\nPhotography & cinematography\nLive music and DJ',
+ '/images/events/wedding-grand.svg'),
 
-CREATE TABLE IF NOT EXISTS gallery (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    event_id INT NOT NULL,
-    image_url VARCHAR(255) NOT NULL,
-    caption VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
-);
+('Beachside Destination Wedding',
+ 'An intimate destination wedding on the coast with a sunset ceremony and a beachside reception. Travel and stay packages available.',
+ 'Wedding', '2026-12-05 17:00:00', 'Goa Beachfront Resort', 225000.00,
+ 'Beachfront ceremony setup\n5-star accommodation for 40 guests\nCatering & bar service\nHenna & makeup artists\nAirport transfers',
+ '/images/events/wedding-beach.svg'),
 
--- ==========================================
--- Sample Data Insertion
--- ==========================================
+('Traditional Sangeet Night',
+ 'A colourful pre-wedding celebration filled with classical dance, dhol beats and a buffet dinner for up to 200 guests.',
+ 'Wedding', '2026-10-18 19:30:00', 'Heritage Courtyard, Jaipur', 85000.00,
+ 'Courtyard venue hire\nTraditional decor & drapping\nDhol and live music duo\nBuffet dinner for 200\nChoreography support',
+ '/images/events/wedding-sangeet.svg'),
 
--- Insert sample events
-INSERT IGNORE INTO events (id, title, category, description, event_date, event_time, venue, image_url, status) VALUES 
-(1, 'Tech Innovators Summit 2026', 'Conference', 'A global gathering of tech leaders and visionaries.', '2026-11-15', '09:00:00', 'San Francisco Convention Center', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87', 'upcoming'),
-(2, 'Global Music Festival', 'Concert', 'An unforgettable weekend with top international artists.', '2026-12-20', '18:00:00', 'Central Park, NY', 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea', 'upcoming');
+('Tech Innovators Summit 2026',
+ 'A full-day technology summit with keynote talks, panel discussions and networking breaks for 300 attendees.',
+ 'Corporate', '2026-11-21 09:00:00', 'ITC Grand Bharat, Noida', 75000.00,
+ 'Conference hall for the day\nAV and stage setup\nTwo breakaway tracks\nLunch and coffee breaks\nEvent photography',
+ '/images/events/corporate-summit.svg'),
 
--- Insert sample services
-INSERT IGNORE INTO services (id, name, description, image_url) VALUES 
-(1, 'Corporate Events', 'End-to-end planning and execution of professional corporate events.', 'https://images.unsplash.com/photo-1511578314322-379afb476865'),
-(2, 'Wedding Planning', 'Creating magical and unforgettable moments for your special day.', 'https://images.unsplash.com/photo-1519225421980-715cb0215aed');
+('Annual Sales Kickoff',
+ 'A high-energy kickoff to set sales targets for the year, with team awards, a keynote talk and an evening social.',
+ 'Corporate', '2026-12-12 08:30:00', 'Taj Palace Convention Centre, Bengaluru', 110000.00,
+ 'Full-day venue hire\nAward ceremony setup\nEvening social with bar\nBranded merchandise\nPresentation equipment',
+ '/images/events/corporate-kickoff.svg'),
 
--- Insert sample testimonials
-INSERT IGNORE INTO testimonials (id, name, designation, message, rating, image_url) VALUES 
-(1, 'Alice Johnson', 'CEO of TechCorp', 'The event was flawlessly executed. Highly recommend their services!', 5, 'https://randomuser.me/api/portraits/women/44.jpg'),
-(2, 'Mark Smith', 'Marketing Director', 'Professional, creative, and extremely attentive to details.', 5, 'https://randomuser.me/api/portraits/men/32.jpg');
+('Milestone 50th Birthday Gala',
+ 'A sophisticated evening celebrating five decades, with a sit-down dinner, live band and a keepsake cake for up to 80 guests.',
+ 'Birthday', '2026-10-30 19:00:00', 'The Conservatory, Bengaluru', 25000.00,
+ 'Private dining room\nLive band for 3 hours\nFive-course dinner\nCustom celebration cake\nBalloon & photo booth decor',
+ '/images/events/birthday-50th.svg'),
 
--- Insert sample gallery images
-INSERT IGNORE INTO gallery (id, event_id, image_url, caption) VALUES 
-(1, 1, 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678', 'Keynote Speech at Tech Summit'),
-(2, 2, 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819', 'Crowd enjoying the Music Festival');
+('Kids Garden Birthday Party',
+ 'A cheerful outdoor birthday party for children with games, a magic show, an art station and a cake of their choice.',
+ 'Birthday', '2026-10-25 16:00:00', 'Botanical Gardens Lawn, Pune', 12000.00,
+ 'Garden lawn for 3 hours\nMagic show and games\nArt and craft station\nBirthday cake\nReturn gifts for 25 kids',
+ '/images/events/birthday-garden.svg'),
+
+('Global Music Festival',
+ 'A two-day outdoor music festival across four stages with 20+ artists, food courts and a camping zone.',
+ 'Concert', '2026-12-20 16:00:00', 'Marine Drive Grounds, Chennai', 9999.00,
+ 'Weekend pass for all stages\nFood and beverage stalls\nCamping zone access\nFree shuttle service\nFirst aid on site',
+ '/images/events/concert-festival.svg'),
+
+('Standup Comedy Night Live',
+ 'An evening of stand-up with six performers, a host and an open mic segment in an intimate 250-seat venue.',
+ 'Concert', '2026-11-07 20:00:00', 'The Basement, New Delhi', 4500.00,
+ 'Entry to the live show\nSix comedy performances\nWelcome drink\nOpen mic participation\nStandby queue priority',
+ '/images/events/concert-comedy.svg');

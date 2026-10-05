@@ -1,9 +1,27 @@
+# Dependencies
 node_modules/
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Build output
 dist/
 build/
+*.egg
+
+# Environment files - never commit real credentials.
+# Only the .env.example files should be tracked.
 .env
-__pycache__/
-*.pyc
-.venv/
-env/
-venv/
+.env.local
+.env.*.local
+!.env.example
+
+# Editor / OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
