@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional
 from datetime import date, time, datetime
 
@@ -45,6 +45,31 @@ class TestimonialBase(BaseModel):
     message: str
     rating: int
     image_url: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+class BookingCreate(BaseModel):
+    full_name: str
+    email: EmailStr
+    phone: str
+    event_type: str
+    preferred_date: date
+    guests: int = Field(gt=0)
+    message: Optional[str] = None
+
+
+class BookingResponse(BaseModel):
+    id: int
+    full_name: str
+    email: EmailStr
+    phone: str
+    event_type: str
+    preferred_date: date
+    guests: int
+    message: Optional[str] = None
+    status: str
+    created_at: datetime
 
     class Config:
         from_attributes = True
