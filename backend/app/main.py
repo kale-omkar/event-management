@@ -1,5 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.database import engine, Base
+from app.models import models
+
+# Auto-create all tables in the database based on the SQLAlchemy models
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Event Management API")
 
