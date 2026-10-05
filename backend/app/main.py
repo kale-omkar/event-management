@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.models import models
+from app.routes import events, services, testimonials, gallery
 
 # Auto-create all tables in the database based on the SQLAlchemy models
 Base.metadata.create_all(bind=engine)
@@ -21,6 +22,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(events.router)
+app.include_router(services.router)
+app.include_router(testimonials.router)
+app.include_router(gallery.router)
 
 @app.get("/")
 def read_root():
