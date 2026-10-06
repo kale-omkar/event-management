@@ -7,5 +7,6 @@ Importing a model here registers it with SQLAlchemy's metadata, which is what
 from app.models.booking import Booking
 from app.models.contact import ContactMessage
 from app.models.event import Event
+from app.models.service import Service
 
-__all__ = ["Event", "Booking", "ContactMessage"]
+__all__ = ["Event", "Booking", "ContactMessage","Service"]

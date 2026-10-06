@@ -15,8 +15,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.config import settings
 from app.database import Base, SessionLocal, engine
-from app.models import Booking, ContactMessage, Event  # noqa: F401  (register tables)
-from app.routes import booking_routes, contact_routes, event_routes
+from app.models import Booking, ContactMessage, Event,Service  # noqa: F401  (register tables)
+from app.routes import booking_routes, contact_routes, event_routes,service_routes
 from app.seed import seed_if_empty
 
 logger = logging.getLogger("app.main")
@@ -67,6 +67,7 @@ app.add_middleware(
 app.include_router(event_routes.router)
 app.include_router(booking_routes.router)
 app.include_router(contact_routes.router)
+app.include_router(service_routes.router)
 
 
 @app.exception_handler(SQLAlchemyError)

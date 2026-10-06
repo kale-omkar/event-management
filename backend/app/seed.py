@@ -11,6 +11,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.event import Event
+from app.models.service import Service
 
 # 9 events across 4 categories, ordered by date.
 SEED_EVENTS = [
@@ -133,20 +134,90 @@ SEED_EVENTS = [
     },
 ]
 
+# Demo services displayed on the Services page.
+SEED_SERVICES = [
+    {
+        "name": "Wedding Planning",
+        "description": (
+            "Mehndi, sangeet, ceremony and reception planned end to end, "
+            "with vendor coordination on the day."
+        ),
+        "image_url": "/images/services/wedding-planning.svg",
+    },
+    {
+        "name": "Corporate Events",
+        "description": (
+            "Conferences, kickoffs and award nights with AV, staging and "
+            "a run-sheet your team can rely on."
+        ),
+        "image_url": "/images/services/corporate-events.svg",
+    },
+    {
+        "name": "Birthday Parties",
+        "description": (
+            "Milestone birthdays and children's parties, with themed decor, "
+            "games and a cake of your choice."
+        ),
+        "image_url": "/images/services/birthday-parties.svg",
+    },
+    {
+        "name": "Live Music & Concerts",
+        "description": (
+            "Artist booking, sound and lighting for concerts, festivals "
+            "and private performances."
+        ),
+        "image_url": "/images/services/live-music.svg",
+    },
+    {
+        "name": "Catering & Decor",
+        "description": (
+            "Menus for every budget, from buffet to plated, paired with "
+            "themed decor and floral design."
+        ),
+        "image_url": "/images/services/catering-decor.svg",
+    },
+    {
+        "name": "Photo & Video",
+        "description": (
+            "Candid photography, highlight films and same-day edits "
+            "delivered after your event."
+        ),
+        "image_url": "/images/services/photo-video.svg",
+    },
+]
+
 
 def seed_if_empty(db: Session) -> int:
-    """Insert the demo events when the table has no rows.
+    """Insert demo events and services when their tables are empty.
 
-    Returns the number of events inserted, so startup can log it.
+    Returns the total number of records inserted.
     Existing data is never overwritten.
     """
-    existing = db.scalar(select(func.count()).select_from(Event))
-    if existing:
-        return 0
+    inserted = 0
 
-    # Explicit ids keep the demo data stable and predictable (1-9) so that
-    # links, docs and screenshots do not shift when the table is re-seeded.
-    # Autoincrement would otherwise continue from wherever the last id stopped.
-    db.add_all([Event(id=index, **row) for index, row in enumerate(SEED_EVENTS, start=1)])
-    db.commit()
-    return len(SEED_EVENTS)
+    existing_events = db.scalar(select(func.count()).select_from(Event))
+
+    if not existing_events:
+        db.add_all(
+            [
+                Event(id=index, **row)
+                for index, row in enumerate(SEED_EVENTS, start=1)
+            ]
+        )
+        inserted += len(SEED_EVENTS)
+
+    existing_services = db.scalar(select(func.count()).select_from(Service))
+
+    if not existing_services:
+        db.add_all(
+            [
+                Service(id=index, **row)
+                for index, row in enumerate(SEED_SERVICES, start=1)
+            ]
+        )
+        inserted += len(SEED_SERVICES)
+
+    if inserted:
+        db.commit()
+
+    return inserted
