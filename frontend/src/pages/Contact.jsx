@@ -17,6 +17,7 @@ import useToast from '../components/useToast'
 import api from '../services/api'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const NAME_RE = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/
 
 const EMPTY = { name: '', email: '', subject: '', message: '' }
 
@@ -24,10 +25,11 @@ function validate(field, value) {
   const v = value.trim()
 
   if (field === 'name') {
-    if (!v) return 'Please enter your name'
-    if (v.length < 2) return 'Name must be at least 2 characters'
-    return ''
-  }
+  if (!v) return 'Please enter your name'
+  if (v.length < 2) return 'Name must be at least 2 characters'
+  if (!NAME_RE.test(v)) return 'Please enter a valid name'
+  return ''
+}
 
   if (field === 'email') {
     if (!v) return 'Please enter your email'

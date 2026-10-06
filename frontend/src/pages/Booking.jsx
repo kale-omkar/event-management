@@ -16,6 +16,7 @@ const EVENT_TYPES = ['Wedding', 'Corporate', 'Birthday', 'Concert', 'Other']
 const PHONE_RE = /^(?:\+?91[- ]?)?[6-9]\d{9}$/
 // Deliberately simple; the server validates the real thing with EmailStr.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const NAME_RE = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/
 
 const EMPTY = {
   name: '',
@@ -45,6 +46,7 @@ function validate(field, values) {
     case 'name':
       if (!value) return 'Please enter your name'
       if (value.length < 2) return 'Name must be at least 2 characters'
+      if (!NAME_RE.test(value)) return 'Please enter a valid name'
       return ''
 
     case 'email':
