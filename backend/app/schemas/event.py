@@ -19,6 +19,7 @@ class EventBase(BaseModel):
     image_url: str | None = None
 
 class EventCreate(EventBase):
+    pass
 
 class EventResponse(EventBase):
 
