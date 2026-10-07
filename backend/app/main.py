@@ -1,9 +1,4 @@
-"""FastAPI entrypoint for the Event Management API.
 
-Run from the `backend/` folder:
-
-    python -m uvicorn app.main:app --reload
-"""
 
 import logging
 from contextlib import asynccontextmanager
@@ -27,15 +22,12 @@ from app.seed import seed_if_empty
 
 logger = logging.getLogger("app.main")
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Runs once when the server starts and once when it shuts down."""
+    
     try:
-        # Create database tables that do not exist yet.
         Base.metadata.create_all(bind=engine)
 
-        # Insert demo data if enabled.
         if settings.SEED_DEMO_DATA:
             with SessionLocal() as db:
                 inserted = seed_if_empty(db)
@@ -46,11 +38,9 @@ async def lifespan(app: FastAPI):
         logger.info("Database ready.")
 
     except Exception as exc:
-        # Keep the API running even if the database is unavailable.
         logger.warning("Could not prepare the database: %s", exc)
 
     yield
-
 
 app = FastAPI(
     title="Event Management API",
@@ -58,11 +48,6 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
-
-
-# ---------------------------------------------------------
-# CORS
-# ---------------------------------------------------------
 
 app.add_middleware(
     CORSMiddleware,
@@ -72,28 +57,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# ---------------------------------------------------------
-# API ROUTES
-# ---------------------------------------------------------
-
 app.include_router(event_routes.router)
 app.include_router(booking_routes.router)
 app.include_router(contact_routes.router)
 app.include_router(service_routes.router)
 app.include_router(gallery_routes.router)
 
-
-# ---------------------------------------------------------
-# DATABASE ERROR HANDLER
-# ---------------------------------------------------------
-
 @app.exception_handler(SQLAlchemyError)
 async def handle_database_error(
     request: Request,
     exc: SQLAlchemyError,
 ):
-    """Return a clear response when a database error occurs."""
 
     logger.exception(
         "Database error while handling %s %s",
@@ -113,27 +87,15 @@ async def handle_database_error(
         },
     )
 
-
-# ---------------------------------------------------------
-# ROOT ENDPOINT
-# ---------------------------------------------------------
-
 @app.get("/")
 def read_root():
-    """Simple endpoint to confirm that the API is running."""
 
     return {
         "message": "Welcome to the Event Management API"
     }
 
-
-# ---------------------------------------------------------
-# HEALTH CHECK
-# ---------------------------------------------------------
-
 @app.get("/api/health")
 def health_check():
-    """Check whether the API and database are reachable."""
 
     try:
         with engine.connect() as connection:

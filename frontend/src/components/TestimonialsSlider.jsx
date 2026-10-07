@@ -40,7 +40,6 @@ export default function TestimonialsSlider() {
     setIndex((current) => (current + step + TESTIMONIALS.length) % TESTIMONIALS.length)
   }, [])
 
-  // Auto-advance, unless the user is hovering or prefers reduced motion.
   useEffect(() => {
     if (paused || reduceMotion) return undefined
     const timer = setInterval(() => go(1), INTERVAL)

@@ -1,4 +1,4 @@
-"""Schema package."""
+
 
 from app.schemas.booking import BookingCreate, BookingResponse
 from app.schemas.contact import ContactCreate, ContactResponse

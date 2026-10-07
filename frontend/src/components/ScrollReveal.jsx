@@ -1,12 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
 
-/**
- * Fades and slides its children in when they scroll into view.
- *
- * Pass `once` (default true) so it stays visible after the first reveal, and
- * `delay` to stagger siblings. Animation is skipped entirely when the user
- * prefers reduced motion.
- */
 export default function ScrollReveal({
   children,
   delay = 0,

@@ -18,16 +18,12 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
 
-  // Close the drawer when the route changes. Adjusting state during render
-  // (rather than in an effect) avoids a flash of the open menu and an extra
-  // render pass.
   const [lastPath, setLastPath] = useState(location.pathname)
   if (location.pathname !== lastPath) {
     setLastPath(location.pathname)
     if (menuOpen) setMenuOpen(false)
   }
 
-  // Add a blurred background once the page is scrolled.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
     onScroll()
@@ -35,7 +31,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Prevent the page behind the drawer from scrolling while it is open.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => {
@@ -43,7 +38,6 @@ export default function Navbar() {
     }
   }, [menuOpen])
 
-  // Close on Escape.
   useEffect(() => {
     if (!menuOpen) return undefined
     const onKey = (e) => e.key === 'Escape' && setMenuOpen(false)
@@ -62,7 +56,6 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop navigation */}
           <nav className="navbar-links" aria-label="Main">
             {LINKS.map(({ to, label }) => (
               <NavLink
@@ -89,7 +82,7 @@ export default function Navbar() {
               aria-controls="mobile-drawer"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             >
-              {/* Animate the icon itself so the two bars can morph. */}
+              
               <motion.span
                 animate={{ rotate: menuOpen ? 90 : 0 }}
                 transition={{ duration: 0.22, ease: 'easeOut' }}
@@ -102,7 +95,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile drawer */}
       <AnimatePresence>
         {menuOpen && (
           <>

@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { FiArrowUp } from 'react-icons/fi'
 import { useEffect, useState } from 'react'
 
-/** Floating button that scrolls back to the top, shown after scrolling down. */
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
 

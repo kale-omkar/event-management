@@ -1,19 +1,3 @@
--- =============================================================================
--- Event Management - MySQL schema
---
--- How to run this file:
---   mysql -u root -p < database/schema.sql
--- or paste it into MySQL Workbench / phpMyAdmin.
---
--- Then import the same credentials into backend/.env:
---   DB_NAME=event_management
---
--- NOTE: the DROP statements below reset the tables. Remove them if you have
--- data you want to keep.
---
--- All prices are in Indian Rupees (INR). The frontend formats them with
--- Intl.NumberFormat('en-IN', { currency: 'INR' }) so they render as ₹1,50,000.
--- =============================================================================
 
 CREATE DATABASE IF NOT EXISTS event_management
     CHARACTER SET utf8mb4
@@ -25,10 +9,6 @@ DROP TABLE IF EXISTS contact_messages;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS events;
 
--- -----------------------------------------------------------------------------
--- events
--- Kept in sync with backend/app/models/event.py
--- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS events (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     title       VARCHAR(255) NOT NULL,
@@ -44,10 +24,6 @@ CREATE TABLE IF NOT EXISTS events (
     INDEX idx_events_date (date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- -----------------------------------------------------------------------------
--- bookings
--- event_id is nullable: a booking may be a general enquiry with no event.
--- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS bookings (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     event_id    INT          NULL,
@@ -64,10 +40,6 @@ CREATE TABLE IF NOT EXISTS bookings (
     FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- -----------------------------------------------------------------------------
--- contact_messages
--- Messages sent through the Contact form.
--- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS contact_messages (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(255) NOT NULL,
@@ -78,11 +50,6 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     INDEX idx_contact_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- =============================================================================
--- Sample events: 9 events across 4 categories, INR prices.
--- The backend also seeds these automatically when the table is empty, so you
--- only need this file if you want to populate a fresh database by hand.
--- =============================================================================
 INSERT INTO events (title, description, category, date, location, price, inclusions, image_url) VALUES
 ('Grand Indian Wedding Celebration',
  'A three-day wedding with mehndi, sangeet and a full reception for up to 500 guests. Includes venue, decor, catering and an on-site event manager.',

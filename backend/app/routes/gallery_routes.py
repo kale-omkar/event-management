@@ -7,7 +7,6 @@ from app.models.gallery import Gallery
 
 router = APIRouter(prefix="/api/gallery", tags=["Gallery"])
 
-
 @router.get("")
 def get_gallery(
     event_id: int | None = None,

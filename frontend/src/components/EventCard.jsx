@@ -5,14 +5,13 @@ import { Link } from 'react-router-dom'
 import SmartImage from './SmartImage'
 import formatPrice from '../utils/formatPrice'
 
-/** Shared event card used by the Events grid and the "related events" list. */
 export default function EventCard({ event, index = 0, showCategory = true }) {
   const eventDate = new Date(event.date)
 
   return (
     <motion.article
       className="card card-hover event-card"
-      // Staggered entrance.
+
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px 0px -60px 0px' }}
