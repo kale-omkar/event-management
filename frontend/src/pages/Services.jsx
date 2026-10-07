@@ -101,7 +101,7 @@ export default function Services() {
 
   return (
     <>
-      {/* Hero Section */}
+      
       <section className="page-hero">
         <div className="container">
           <p className="eyebrow">What we offer</p>
@@ -115,25 +115,21 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Services Section */}
       <section className="section-sm">
         <div className="container">
 
-          {/* Loading */}
           {loading && (
             <div className="text-center">
               <p>Loading services...</p>
             </div>
           )}
 
-          {/* Error */}
           {!loading && error && (
             <div className="text-center">
               <p className="text-muted">{error}</p>
             </div>
           )}
 
-          {/* No Services */}
           {!loading && !error && services.length === 0 && (
             <div className="text-center">
               <p className="text-muted">
@@ -142,7 +138,6 @@ export default function Services() {
             </div>
           )}
 
-          {/* Service Cards */}
           {!loading && !error && services.length > 0 && (
             <div className="service-grid service-grid-lg">
               {services.map((service, index) => {
@@ -167,7 +162,6 @@ export default function Services() {
                       }}
                     >
 
-                      {/* Image */}
                       <div className="service-card-media">
                         <SmartImage
                           src={service.image_url}
@@ -184,7 +178,6 @@ export default function Services() {
                         </span>
                       </div>
 
-                      {/* Content */}
                       <div className="service-card-body">
 
                         <h3>{service.name}</h3>
@@ -193,7 +186,6 @@ export default function Services() {
                           {service.description}
                         </p>
 
-                        {/* Points */}
                         {points.length > 0 && (
                           <ul className="service-points">
                             {points.map((point) => (
@@ -202,7 +194,6 @@ export default function Services() {
                           </ul>
                         )}
 
-                        {/* Price + Enquire */}
                         <div className="service-card-foot">
 
                           {price !== undefined && (
@@ -235,7 +226,6 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Promises Section */}
       <section className="section-sm">
         <div className="container">
           <ScrollReveal>

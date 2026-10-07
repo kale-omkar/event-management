@@ -1,9 +1,4 @@
-/**
- * Toast notifications (provider side).
- *
- * Render <ToastProvider> once, in the Layout, and show messages from anywhere
- * via the useToast hook in ./useToast.js.
- */
+
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi'
@@ -34,7 +29,7 @@ export function ToastProvider({ children }) {
     (type, message) => {
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
       setToasts((current) => [...current, { id, type, message }])
-      // Auto-dismiss. Errors linger a little longer.
+
       timers.current.set(id, setTimeout(() => dismiss(id), type === 'error' ? 6000 : 4000))
     },
     [dismiss],

@@ -12,9 +12,6 @@ import useFetch from '../hooks/useFetch'
 
 const ALL = 'All'
 
-/* ============================================================
-   Countdown Component
-   ============================================================ */
 function Countdown({ eventDate }) {
   const calculateTime = () => {
     const target = new Date(eventDate).getTime()
@@ -93,9 +90,6 @@ function Countdown({ eventDate }) {
   )
 }
 
-/* ============================================================
-   Event Card With Countdown
-   ============================================================ */
 function EventWithCountdown({ event, index }) {
   const eventDate = new Date(event.date)
   const now = new Date()
@@ -119,9 +113,6 @@ function EventWithCountdown({ event, index }) {
   )
 }
 
-/* ============================================================
-   Main Events Page
-   ============================================================ */
 export default function Events() {
   const toast = useToast()
 
@@ -133,10 +124,6 @@ export default function Events() {
 
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
-  /* ----------------------------------------------------------
-     Events API
-     GET /api/events
-     ---------------------------------------------------------- */
   const {
     data: eventData,
     error: eventError,
@@ -144,10 +131,6 @@ export default function Events() {
     refetch: refetchEvents,
   } = useFetch('/api/events')
 
-  /* ----------------------------------------------------------
-     Gallery API
-     GET /api/gallery
-     ---------------------------------------------------------- */
   const {
     data: galleryData,
     error: galleryError,
@@ -155,9 +138,6 @@ export default function Events() {
     refetch: refetchGallery,
   } = useFetch('/api/gallery')
 
-  /* ----------------------------------------------------------
-     Events
-     ---------------------------------------------------------- */
   const allEvents = useMemo(
     () => eventData?.events ?? [],
     [eventData?.events],
@@ -168,9 +148,6 @@ export default function Events() {
     [eventData?.categories],
   )
 
-  /* ----------------------------------------------------------
-     Filter Events
-     ---------------------------------------------------------- */
   const visibleEvents = useMemo(() => {
     const term = search.trim().toLowerCase()
 
@@ -189,9 +166,6 @@ export default function Events() {
     })
   }, [allEvents, category, search])
 
-  /* ----------------------------------------------------------
-     Upcoming / Previous Events
-     ---------------------------------------------------------- */
   const { upcomingEvents, previousEvents } = useMemo(() => {
     const now = new Date()
 
@@ -230,22 +204,8 @@ export default function Events() {
     }
   }, [visibleEvents])
 
-  /* ----------------------------------------------------------
-     Gallery
-     ---------------------------------------------------------- */
   const allGalleryImages = useMemo(() => {
-    /*
-      Supports common API response structures:
-      {
-        gallery: [...]
-      }
-
-      OR
-
-      {
-        images: [...]
-      }
-    */
+    
     return (
       galleryData?.gallery ??
       galleryData?.images ??
@@ -261,9 +221,6 @@ export default function Events() {
     return [ALL, ...new Set(categories)]
   }, [allGalleryImages])
 
-  /* ----------------------------------------------------------
-     Filter Gallery
-     ---------------------------------------------------------- */
   const visibleGalleryImages = useMemo(() => {
     const term = gallerySearch.trim().toLowerCase()
 
@@ -290,9 +247,6 @@ export default function Events() {
     gallerySearch,
   ])
 
-  /* ----------------------------------------------------------
-     Lightbox Images
-     ---------------------------------------------------------- */
   const lightboxImages = useMemo(
     () =>
       visibleGalleryImages.map((image) => ({
@@ -312,25 +266,16 @@ export default function Events() {
     [visibleGalleryImages],
   )
 
-  /* ----------------------------------------------------------
-     Reset Event Filters
-     ---------------------------------------------------------- */
   const resetEventFilters = () => {
     setCategory(ALL)
     setSearch('')
   }
 
-  /* ----------------------------------------------------------
-     Reset Gallery Filters
-     ---------------------------------------------------------- */
   const resetGalleryFilters = () => {
     setGalleryCategory(ALL)
     setGallerySearch('')
   }
 
-  /* ----------------------------------------------------------
-     Retry
-     ---------------------------------------------------------- */
   const retryEvents = () => {
     refetchEvents()
     toast.info('Retrying events...')
@@ -341,14 +286,9 @@ export default function Events() {
     toast.info('Retrying gallery...')
   }
 
-  /* ==========================================================
-     JSX
-     ========================================================== */
   return (
     <>
-      {/* ======================================================
-          PAGE HERO
-          ====================================================== */}
+      
       <section className="page-hero">
         <div className="container">
           <p className="eyebrow">Browse</p>
@@ -362,16 +302,11 @@ export default function Events() {
         </div>
       </section>
 
-      {/* ======================================================
-          EVENTS
-          ====================================================== */}
       <section className="section-sm">
         <div className="container">
 
-          {/* Filters */}
           <div className="filters">
 
-            {/* Search */}
             <div className="filters-search">
               <FiSearch
                 aria-hidden="true"
@@ -397,7 +332,6 @@ export default function Events() {
               />
             </div>
 
-            {/* Category */}
             <div
               className="chips"
               role="group"
@@ -440,7 +374,6 @@ export default function Events() {
             </div>
           </div>
 
-          {/* Result count */}
           <p
             className="results-count text-subtle"
             aria-live="polite"
@@ -452,12 +385,10 @@ export default function Events() {
                 } events`}
           </p>
 
-          {/* Loading */}
           {eventLoading && (
             <SkeletonGrid count={6} />
           )}
 
-          {/* Error */}
           {!eventLoading && eventError && (
             <ErrorState
               title="Could not load events"
@@ -470,7 +401,6 @@ export default function Events() {
             />
           )}
 
-          {/* Empty */}
           {!eventLoading &&
             !eventError &&
             visibleEvents.length === 0 && (
@@ -480,9 +410,6 @@ export default function Events() {
               />
             )}
 
-          {/* ==================================================
-              UPCOMING EVENTS
-              ================================================== */}
           {!eventLoading &&
             !eventError &&
             upcomingEvents.length > 0 && (
@@ -525,9 +452,6 @@ export default function Events() {
               </section>
             )}
 
-          {/* ==================================================
-              PREVIOUS EVENTS
-              ================================================== */}
           {!eventLoading &&
             !eventError &&
             previousEvents.length > 0 && (
@@ -573,9 +497,6 @@ export default function Events() {
         </div>
       </section>
 
-      {/* ======================================================
-          GALLERY
-          ====================================================== */}
       <section className="section-sm">
         <div className="container">
 
@@ -596,10 +517,8 @@ export default function Events() {
             </div>
           </ScrollReveal>
 
-          {/* Gallery Filters */}
           <div className="filters">
 
-            {/* Gallery Search */}
             <div className="filters-search">
               <FiSearch
                 aria-hidden="true"
@@ -625,7 +544,6 @@ export default function Events() {
               />
             </div>
 
-            {/* Gallery Category */}
             <div
               className="chips"
               role="group"
@@ -673,12 +591,10 @@ export default function Events() {
             </div>
           </div>
 
-          {/* Gallery Loading */}
           {galleryLoading && (
             <SkeletonGrid count={6} />
           )}
 
-          {/* Gallery Error */}
           {!galleryLoading &&
             galleryError && (
               <ErrorState
@@ -688,7 +604,6 @@ export default function Events() {
               />
             )}
 
-          {/* Gallery Empty */}
           {!galleryLoading &&
             !galleryError &&
             visibleGalleryImages.length ===
@@ -699,7 +614,6 @@ export default function Events() {
               />
             )}
 
-          {/* Gallery Grid */}
           {!galleryLoading &&
             !galleryError &&
             visibleGalleryImages.length >
@@ -771,9 +685,6 @@ export default function Events() {
         </div>
       </section>
 
-      {/* ======================================================
-          LIGHTBOX
-          ====================================================== */}
       <Lightbox
         images={lightboxImages}
         index={lightboxIndex}

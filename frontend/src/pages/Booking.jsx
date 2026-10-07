@@ -12,9 +12,8 @@ import formatPrice from '../utils/formatPrice'
 
 const EVENT_TYPES = ['Wedding', 'Corporate', 'Birthday', 'Concert', 'Other']
 
-// Matches the server-side rule: 10 digits starting 6-9, optional +91.
 const PHONE_RE = /^(?:\+?91[- ]?)?[6-9]\d{9}$/
-// Deliberately simple; the server validates the real thing with EmailStr.
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const NAME_RE = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/
 
@@ -28,17 +27,12 @@ const EMPTY = {
   message: '',
 }
 
-/** Today's date as YYYY-MM-DD, for the `min` attribute on a date input. */
 function today() {
   const now = new Date()
   const offset = now.getTimezoneOffset() * 60_000
   return new Date(now.getTime() - offset).toISOString().slice(0, 10)
 }
 
-/**
- * Validate a single field.
- * @returns {string} error message, or '' when valid
- */
 function validate(field, values) {
   const value = (values[field] ?? '').toString().trim()
 
@@ -79,7 +73,7 @@ function validate(field, values) {
     }
 
     case 'message':
-      // Message is optional.
+
       return ''
 
     default:
@@ -94,20 +88,16 @@ export default function Booking() {
 
   const [values, setValues] = useState(EMPTY)
   const [errors, setErrors] = useState({})
-  // Track which fields have been blurred so errors appear at the right time.
+
   const [touched, setTouched] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [receipt, setReceipt] = useState(null)
 
-  // Fetch the chosen event so the form can show what it is booking.
   const { data: selectedEvent } = useFetch(
     eventId ? `/api/events/${eventId}` : null,
   )
 
-  // The event type follows the selected event's category, unless the user has
-  // explicitly picked one. Derived during render rather than synced by an
-  // effect, so the select is correct on the very first paint.
   const typeFromEvent = useMemo(() => {
     const category = selectedEvent?.category
     if (!category) return null
@@ -125,7 +115,6 @@ export default function Booking() {
     const { value } = e.target
     setValues((current) => ({ ...current, [field]: value }))
 
-    // Re-validate live once a field has already shown an error.
     if (touched[field]) {
       setErrors((current) => ({ ...current, [field]: validate(field, { ...values, [field]: value }) }))
     }
@@ -153,7 +142,7 @@ export default function Booking() {
 
     const found = validateAll()
     if (Object.keys(found).length > 0) {
-      // Move focus to the first problem so keyboard users are not stranded.
+
       const first = Object.keys(found)[0]
       document.getElementById(`booking-${first}`)?.focus()
       return
@@ -180,7 +169,7 @@ export default function Booking() {
       setTouched({})
       setErrors({})
     } catch (err) {
-      // Surface the server's own validation messages where we can.
+
       const detail = err.response?.data?.detail
       if (Array.isArray(detail)) {
         const fieldErrors = {}
@@ -207,7 +196,6 @@ export default function Booking() {
     }
   }
 
-  // Success screen replaces the form once a booking is stored.
   if (receipt) {
     return (
       <section className="section container">
@@ -285,7 +273,7 @@ export default function Booking() {
 
       <section className="section-sm">
         <div className="container booking-layout">
-          {/* Form ---------------------------------------------------------- */}
+          
           <div className="booking-form-wrap">
             <AnimatePresence>
               {submitError && (
@@ -509,7 +497,6 @@ export default function Booking() {
             </form>
           </div>
 
-          {/* Summary rail --------------------------------------------------- */}
           <aside className="booking-aside">
             <div className="booking-card">
               {selectedEvent ? (

@@ -1,4 +1,4 @@
-"""SQLAlchemy model for the `services` table."""
+
 
 from datetime import datetime
 
@@ -7,7 +7,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 
 from app.database import Base
-
 
 class Service(Base):
     __tablename__ = "services"

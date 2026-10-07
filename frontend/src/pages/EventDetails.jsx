@@ -10,7 +10,6 @@ import useToast from '../components/useToast'
 import useFetch from '../hooks/useFetch'
 import formatPrice from '../utils/formatPrice'
 
-// Photos shown in the gallery. All are local files, so nothing can 404.
 const GALLERY = [
   { src: '/images/gallery/mandap.svg', alt: 'Decorated stage' },
   { src: '/images/gallery/reception-hall.svg', alt: 'Reception hall' },
@@ -66,7 +65,6 @@ export default function EventDetails() {
 
   const eventDate = new Date(event.date)
 
-  // The API stores inclusions one per line.
   const inclusions = (event.inclusions ?? '')
     .split('\n')
     .map((line) => line.trim())
@@ -116,7 +114,7 @@ export default function EventDetails() {
 
       <section className="section-sm">
         <div className="container detail-layout">
-          {/* Main column ------------------------------------------------ */}
+          
           <div className="detail-main">
             <SmartImage
               src={event.image_url}
@@ -163,7 +161,6 @@ export default function EventDetails() {
             </ScrollReveal>
           </div>
 
-          {/* Sticky booking card --------------------------------------- */}
           <aside className="detail-aside">
             <div className="booking-card">
               <p className="booking-card-label">Package price</p>
@@ -190,7 +187,6 @@ export default function EventDetails() {
                 </li>
               </ul>
 
-              {/* Carries the event id so the booking form can prefill it. */}
               <Link to={`/booking?event=${event.id}`} className="btn btn-primary btn-block">
                 Book This Event
               </Link>

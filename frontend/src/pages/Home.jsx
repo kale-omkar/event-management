@@ -41,8 +41,6 @@ const STATS = [
 export default function Home() {
   const toast = useToast()
 
-  // Health check doubles as the demo of the data-fetching pattern. The page
-  // renders regardless of what the API returns.
   const { data: health, error: healthError } = useFetch('/api/health')
 
   const {
@@ -56,9 +54,7 @@ export default function Home() {
 
   return (
     <>
-      {/* ---------------------------------------------------------------- */}
-      {/* Hero                                                             */}
-      {/* ---------------------------------------------------------------- */}
+
       <section className="hero">
         <div className="hero-media" aria-hidden="true">
           <SmartImage
@@ -114,7 +110,6 @@ export default function Home() {
             </Link>
           </motion.div>
 
-          {/* Small status chip, so API problems are visible but not alarming. */}
           <motion.p
             className="hero-status"
             initial={{ opacity: 0 }}
@@ -128,9 +123,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Stats                                                            */}
-      {/* ---------------------------------------------------------------- */}
       <section className="section-sm stats-band">
         <div className="container">
           <div className="stats-grid">
@@ -147,9 +139,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Services                                                         */}
-      {/* ---------------------------------------------------------------- */}
       <section className="section">
         <div className="container">
           <ScrollReveal>
@@ -193,9 +182,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Featured events                                                   */}
-      {/* ---------------------------------------------------------------- */}
       <section className="section">
         <div className="container">
           <ScrollReveal>
@@ -249,9 +235,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Testimonials                                                     */}
-      {/* ---------------------------------------------------------------- */}
       <section className="section">
         <div className="container">
           <ScrollReveal>
@@ -267,9 +250,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Final CTA                                                        */}
-      {/* ---------------------------------------------------------------- */}
       <section className="section-sm">
         <div className="container">
           <ScrollReveal>

@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
-/** Friendly 404 page for any URL that does not match a route. */
 export default function NotFound() {
   return (
     <section className="section container">

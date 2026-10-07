@@ -37,7 +37,7 @@ function validate(field, value) {
     return ''
   }
 
-  if (field === 'subject') return '' // optional
+  if (field === 'subject') return ''
 
   if (field === 'message') {
     if (!v) return 'Please enter your message'
@@ -163,7 +163,7 @@ export default function Contact() {
 
       <section className="section-sm">
         <div className="container contact-layout">
-          {/* Form ---------------------------------------------------------- */}
+          
           <div>
             {sent && (
               <motion.div
@@ -291,7 +291,6 @@ export default function Contact() {
             </form>
           </div>
 
-          {/* Contact info + map -------------------------------------------- */}
           <aside className="contact-aside">
             <div className="contact-cards">
               {CHANNELS.map(({ Icon, title, lines, href }) => (
@@ -317,8 +316,6 @@ export default function Contact() {
               ))}
             </div>
 
-            {/* Map placeholder: an embedded map would need an API key, so this
-                is a styled, accessible stand-in that links to the location. */}
             <div className="map-placeholder">
               <FiMapPin aria-hidden="true" className="map-pin" />
               <p className="map-title">Our studio</p>

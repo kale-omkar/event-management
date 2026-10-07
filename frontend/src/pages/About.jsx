@@ -57,7 +57,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Story ------------------------------------------------------------ */}
       <section className="section-sm">
         <div className="container story">
           <div className="story-text">
@@ -89,7 +88,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Mission / vision / approach -------------------------------------- */}
       <section className="section-sm">
         <div className="container">
           <div className="value-grid">
@@ -108,7 +106,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team -------------------------------------------------------------- */}
       <section className="section-sm">
         <div className="container">
           <ScrollReveal>
@@ -142,7 +139,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Timeline ---------------------------------------------------------- */}
       <section className="section-sm">
         <div className="container">
           <ScrollReveal>

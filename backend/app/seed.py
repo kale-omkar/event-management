@@ -1,9 +1,4 @@
-"""Demo data inserted automatically the first time the database is empty.
 
-Prices are in Indian Rupees and are round, realistic package amounts rather
-than converted dollar figures. Image paths are relative so the frontend can
-resolve them against frontend/public/ with no API involvement.
-"""
 
 from datetime import datetime
 
@@ -13,7 +8,6 @@ from sqlalchemy.orm import Session
 from app.models.event import Event
 from app.models.service import Service
 
-# 9 events across 4 categories, ordered by date.
 SEED_EVENTS = [
     {
         "title": "Grand Indian Wedding Celebration",
@@ -134,7 +128,6 @@ SEED_EVENTS = [
     },
 ]
 
-# Demo services displayed on the Services page.
 SEED_SERVICES = [
     {
         "name": "Wedding Planning",
@@ -186,13 +179,8 @@ SEED_SERVICES = [
     },
 ]
 
-
 def seed_if_empty(db: Session) -> int:
-    """Insert demo events and services when their tables are empty.
-
-    Returns the total number of records inserted.
-    Existing data is never overwritten.
-    """
+    
     inserted = 0
 
     existing_events = db.scalar(select(func.count()).select_from(Event))

@@ -6,7 +6,6 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import { ToastProvider } from './ToastProvider'
 
-/** Jumps to the top of the page whenever the route changes. */
 function ScrollToTop() {
   const { pathname } = useLocation()
 
@@ -17,10 +16,6 @@ function ScrollToTop() {
   return null
 }
 
-/**
- * Shell shared by every page: sticky navbar, animated page area, footer.
- * Rendered once as the parent route so the chrome never re-mounts.
- */
 export default function Layout() {
   const location = useLocation()
 

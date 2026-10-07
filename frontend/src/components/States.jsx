@@ -1,4 +1,4 @@
-/** Shimmering placeholder blocks shown while data is loading. */
+
 
 export function SkeletonCard() {
   return (
@@ -23,7 +23,6 @@ export function SkeletonGrid({ count = 6 }) {
   )
 }
 
-/** Friendly message with a Retry button, used when a request fails. */
 export function ErrorState({ title = 'Something went wrong', message, onRetry }) {
   return (
     <div className="state-panel" role="alert">
@@ -41,7 +40,6 @@ export function ErrorState({ title = 'Something went wrong', message, onRetry })
   )
 }
 
-/** Shown when a request succeeds but there is nothing to display. */
 export function EmptyState({ title = 'Nothing here yet', message }) {
   return (
     <div className="state-panel">

@@ -1,13 +1,9 @@
-/* ============================================================================
-   Design system
-   One place for the palette, type scale, spacing, radii, shadows and motion.
-   Components then use only these variables, so the whole site stays cohesive.
-   ========================================================================== */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Brand: deep indigo -> violet primary, warm gold accent */
+  
   --brand-900: #1e1b4b;
   --brand-800: #2e2a6b;
   --brand-700: #3730a3;
@@ -20,7 +16,6 @@
   --accent-400: #f59e0b;
   --accent-300: #fbbf24;
 
-  /* Neutrals */
   --ink-900: #0f172a;
   --ink-800: #1e293b;
   --ink-700: #334155;
@@ -40,7 +35,6 @@
   --warn-600: #b45309;
   --warn-50: #fffbeb;
 
-  /* Semantic */
   --bg: var(--ink-50);
   --surface: var(--white);
   --surface-alt: var(--ink-100);
@@ -54,7 +48,6 @@
   --gradient-hero: linear-gradient(180deg, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.55) 55%, rgba(15, 23, 42, 0.85) 100%);
   --gradient-gold: linear-gradient(135deg, var(--accent-400) 0%, var(--accent-600) 100%);
 
-  /* Spacing scale (4px base) */
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 0.75rem;
@@ -68,21 +61,18 @@
   --sp-20: 5rem;
   --sp-24: 6rem;
 
-  /* Radii */
   --r-sm: 8px;
   --r-md: 12px;
   --r-lg: 18px;
   --r-xl: 26px;
   --r-full: 999px;
 
-  /* Shadows */
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.06);
   --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.07);
   --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.10);
   --shadow-lg: 0 18px 45px rgba(15, 23, 42, 0.14);
   --shadow-brand: 0 12px 34px rgba(67, 56, 202, 0.28);
 
-  /* Type */
   --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
@@ -96,7 +86,6 @@
   --fs-4xl: 3rem;
   --fs-5xl: 3.75rem;
 
-  /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 140ms;
@@ -107,10 +96,6 @@
   --container: 1200px;
   --container-wide: 1400px;
 }
-
-/* ============================================================================
-   Reset
-   ========================================================================== */
 
 *,
 *::before,
@@ -123,7 +108,7 @@
 }
 
 html {
-  /* Anchor links land below the sticky navbar. */
+  
   scroll-padding-top: calc(var(--nav-height) + 1rem);
   -webkit-text-size-adjust: 100%;
 }
@@ -136,7 +121,7 @@ body {
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Never allow sideways scroll at any width. */
+  
   overflow-x: hidden;
 }
 
@@ -185,7 +170,6 @@ p {
   text-wrap: pretty;
 }
 
-/* Visible, consistent focus for keyboard users only. */
 :focus-visible {
   outline: 3px solid var(--brand-400);
   outline-offset: 3px;
@@ -196,10 +180,6 @@ p {
   background: var(--brand-600);
   color: var(--white);
 }
-
-/* ============================================================================
-   Layout primitives
-   ========================================================================== */
 
 .container {
   width: 100%;
@@ -271,10 +251,6 @@ p {
   margin-inline: auto;
   text-align: center;
 }
-
-/* ============================================================================
-   Buttons
-   ========================================================================== */
 
 .btn {
   display: inline-flex;
@@ -356,7 +332,6 @@ p {
 .btn-sm { padding: 0.55rem 1.1rem; font-size: var(--fs-xs); }
 .btn-lg { padding: 1rem 2rem; font-size: var(--fs-base); }
 
-/* Spinner used inside buttons while a request is in flight. */
 .spinner {
   width: 1em;
   height: 1em;
@@ -370,10 +345,6 @@ p {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-
-/* ============================================================================
-   Cards
-   ========================================================================== */
 
 .card {
   background: var(--surface);
@@ -391,10 +362,6 @@ p {
   box-shadow: var(--shadow-lg);
   border-color: var(--brand-400);
 }
-
-/* ============================================================================
-   Forms
-   ========================================================================== */
 
 .field {
   display: flex;
@@ -478,7 +445,6 @@ p {
   color: var(--text-subtle);
 }
 
-/* Inline alert used for form-level errors. */
 .alert {
   display: flex;
   align-items: flex-start;
@@ -501,11 +467,6 @@ p {
   color: var(--warn-600);
 }
 
-/* ============================================================================
-   SmartImage
-   The wrapper reserves space up front, so loading an image never shifts layout.
-   ========================================================================== */
-
 .smart-image {
   position: relative;
   width: 100%;
@@ -527,7 +488,6 @@ p {
   transform: scale(1);
 }
 
-/* Shimmer skeleton shown while the image downloads. */
 .smart-image-skeleton {
   position: absolute;
   inset: 0;
@@ -546,14 +506,9 @@ p {
   to { background-position: -60% 0; }
 }
 
-/* Subtle zoom when hovering a card that contains an image. */
 .card-hover:hover .smart-image-img {
   transform: scale(1.06);
 }
-
-/* ============================================================================
-   Toasts
-   ========================================================================== */
 
 .toast-region {
   position: fixed;
@@ -618,10 +573,6 @@ p {
   color: var(--text);
 }
 
-/* ============================================================================
-   Utility
-   ========================================================================== */
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -652,11 +603,6 @@ p {
   color: var(--white);
 }
 
-/* ============================================================================
-   Responsive
-   Mobile first: these widen the layout as space allows.
-   ========================================================================== */
-
 @media (min-width: 768px) {
   .container {
     padding-inline: var(--sp-6);
@@ -668,11 +614,6 @@ p {
     padding-inline: var(--sp-8);
   }
 }
-
-/* ============================================================================
-   Respect reduced motion.
-   framer-motion reads this too via useReducedMotion in animated components.
-   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   *,

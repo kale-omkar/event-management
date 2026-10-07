@@ -4,13 +4,6 @@ import { useCallback, useEffect } from 'react'
 
 import SmartImage from './SmartImage'
 
-/**
- * Full-screen image viewer.
- *
- * Keyboard: Escape closes, ArrowLeft/ArrowRight move between images. The body
- * scroll is locked while open, and focus is moved into the dialog so screen
- * readers announce it.
- */
 export default function Lightbox({ images, index, onClose, onPrev, onNext }) {
   const open = index !== null && images.length > 0
 
