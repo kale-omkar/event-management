@@ -97,7 +97,7 @@ function Countdown({ eventDate }) {
    Event Card With Countdown
    ============================================================ */
 function EventWithCountdown({ event, index }) {
-  const eventDate = new Date(event.event_date)
+  const eventDate = new Date(event.date)
   const now = new Date()
 
   const isUpcoming = eventDate >= now
@@ -112,8 +112,8 @@ function EventWithCountdown({ event, index }) {
     >
       <EventCard event={event} index={index} />
 
-      {isUpcoming && event.event_date && (
-        <Countdown eventDate={event.event_date} />
+      {isUpcoming && event.date && (
+        <Countdown eventDate={event.date} />
       )}
     </motion.div>
   )
@@ -199,11 +199,11 @@ export default function Events() {
     const previous = []
 
     visibleEvents.forEach((event) => {
-      if (!event.event_date) {
+      if (!event.date) {
         return
       }
 
-      const eventDate = new Date(event.event_date)
+      const eventDate = new Date(event.date)
 
       if (eventDate >= now) {
         upcoming.push(event)
@@ -214,14 +214,14 @@ export default function Events() {
 
     upcoming.sort(
       (a, b) =>
-        new Date(a.event_date) -
-        new Date(b.event_date),
+        new Date(a.date) -
+        new Date(b.date),
     )
 
     previous.sort(
       (a, b) =>
-        new Date(b.event_date) -
-        new Date(a.event_date),
+        new Date(b.date) -
+        new Date(a.date),
     )
 
     return {
