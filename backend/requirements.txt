@@ -1,8 +1,7 @@
 fastapi
 uvicorn[standard]
 sqlalchemy
-pymysql
-cryptography
+psycopg2-binary
 python-dotenv
 pydantic
 pydantic-settings
