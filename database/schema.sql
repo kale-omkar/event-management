@@ -50,6 +50,16 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     INDEX idx_contact_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS users (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    full_name       VARCHAR(120) NOT NULL,
+    email           VARCHAR(180) NOT NULL UNIQUE,
+    hashed_password VARCHAR(255) NOT NULL,
+    is_active       TINYINT(1)   NOT NULL DEFAULT 1,
+    created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_users_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT INTO events (title, description, category, date, location, price, inclusions, image_url) VALUES
 ('Grand Indian Wedding Celebration',
  'A three-day wedding with mehndi, sangeet and a full reception for up to 500 guests. Includes venue, decor, catering and an on-site event manager.',
