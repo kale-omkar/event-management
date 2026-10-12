@@ -1,5 +1,3 @@
-
-
 import logging
 from contextlib import asynccontextmanager
 
@@ -10,13 +8,14 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.config import settings
 from app.database import Base, SessionLocal, engine
-from app.models import Booking, ContactMessage, Event, Gallery, Service
+from app.models import Booking, ContactMessage, Event, Gallery, Service, User
 from app.routes import (
     booking_routes,
     contact_routes,
     event_routes,
     gallery_routes,
     service_routes,
+    auth_routes,
 )
 from app.seed import seed_if_empty
 
@@ -57,6 +56,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_routes.router)
 app.include_router(event_routes.router)
 app.include_router(booking_routes.router)
 app.include_router(contact_routes.router)

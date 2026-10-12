@@ -1,5 +1,3 @@
-
-
 from urllib.parse import quote_plus
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -22,6 +20,11 @@ class Settings(BaseSettings):
     )
 
     SEED_DEMO_DATA: bool = True
+
+    # JWT settings
+    JWT_SECRET_KEY: str = "changeme-very-secret-key"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 1440  # 24 hours
 
     @property
     def database_url(self) -> str:
