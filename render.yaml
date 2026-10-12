@@ -31,6 +31,7 @@ services:
       - key: CORS_ORIGINS
         value: https://your-app.netlify.app,http://localhost:5173
         # ⚠️  Update this to your real Netlify URL once the frontend is deployed.
+        # Backend is live at: https://event-management-moui.onrender.com
 
       - key: SEED_DEMO_DATA
         value: "true"
