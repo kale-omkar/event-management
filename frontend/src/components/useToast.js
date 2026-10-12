@@ -9,5 +9,14 @@ export default function useToast() {
     throw new Error('useToast must be used inside <ToastProvider>')
   }
 
-  return context
+  return {
+    ...context,
+    showToast: (message, type = 'info') => {
+      if (type === 'success') context.success(message)
+      else if (type === 'error') context.error(message)
+      else context.info(message)
+    },
+  }
 }
+
+export { useToast }
