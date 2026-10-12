@@ -8,3 +8,7 @@ pydantic
 pydantic-settings
 # Required by Pydantic's EmailStr - without this, importing the schemas fails.
 email-validator
+# Auth
+passlib[bcrypt]
+python-jose[cryptography]
+bcrypt

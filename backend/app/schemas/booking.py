@@ -5,7 +5,7 @@ from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
-PHONE_PATTERN = r"(?:\+?91[- ]?)?[6-9]\d{9}"
+PHONE_PATTERN = r"(?:\+\d{1,3}[- ]?)?\d{10}"
 
 class BookingCreate(BaseModel):
 
@@ -25,7 +25,7 @@ class BookingCreate(BaseModel):
         
         cleaned = value.replace(" ", "").replace("-", "")
         if not re.fullmatch(PHONE_PATTERN, cleaned):
-            raise ValueError("Enter a valid 10-digit Indian mobile number")
+            raise ValueError("Enter a valid 10-digit mobile number")
         return cleaned
 
     @field_validator("event_date")

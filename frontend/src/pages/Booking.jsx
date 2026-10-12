@@ -12,7 +12,7 @@ import formatPrice from '../utils/formatPrice'
 
 const EVENT_TYPES = ['Wedding', 'Corporate', 'Birthday', 'Concert', 'Other']
 
-const PHONE_RE = /^(?:\+?91[- ]?)?[6-9]\d{9}$/
+const PHONE_RE = /^(?:\+\d{1,3}[- ]?)?\d{10}$/
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const NAME_RE = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/
@@ -51,7 +51,7 @@ function validate(field, values) {
     case 'phone':
       if (!value) return 'Please enter your phone number'
       if (!PHONE_RE.test(value.replace(/[\s-]/g, ''))) {
-        return 'Enter a valid 10-digit Indian mobile number'
+        return 'Enter a valid 10-digit mobile number'
       }
       return ''
 
@@ -372,7 +372,7 @@ export default function Booking() {
                       </p>
                     ) : (
                       <p id="booking-phone-hint" className="field-hint">
-                        10-digit Indian mobile number.
+                        10-digit mobile number.
                       </p>
                     )}
                   </div>
