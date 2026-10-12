@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import Lightbox from '../components/Lightbox'
-
-const API_URL = 'http://localhost:8000/api/gallery'
+import api from '../services/api'
 
 export default function Gallery() {
   const [gallery, setGallery] = useState([])
@@ -17,15 +16,9 @@ export default function Gallery() {
         setLoading(true)
         setError('')
 
-        const response = await fetch(API_URL)
+        const response = await api.get('/api/gallery')
 
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`)
-        }
-
-        const data = await response.json()
-
-        setGallery(Array.isArray(data) ? data : [])
+        setGallery(Array.isArray(response.data) ? response.data : [])
       } catch (err) {
         console.error('Gallery fetch error:', err)
         setError('Unable to load gallery images.')
