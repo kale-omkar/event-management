@@ -29,9 +29,12 @@ services:
 
       # ── Non-secret config ──
       - key: CORS_ORIGINS
-        value: https://event-management-ws.netlify.app,https://6accbbe5857de18ee0184e88--event-management-ws.netlify.app,http://localhost:5173,http://127.0.0.1:5173
+        value: https://event-management-ws.netlify.app,https://6ad874e747faab7c8cce7a13--event-management-ws.netlify.app,https://6accbbe5857de18ee0184e88--event-management-ws.netlify.app,http://localhost:5173,http://127.0.0.1:5173
         # Backend: https://event-management-moui.onrender.com
         # Frontend: https://event-management-ws.netlify.app
+
+      - key: CORS_ORIGIN_REGEX
+        value: "https://.*\\.netlify\\.app"
 
       - key: SEED_DEMO_DATA
         value: "true"

@@ -12,8 +12,12 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql://user:password@localhost:5432/event_management"
 
     CORS_ORIGINS: str = (
+        "https://event-management-ws.netlify.app,"
+        "https://6ad874e747faab7c8cce7a13--event-management-ws.netlify.app,"
         "http://localhost:5173,http://127.0.0.1:5173"
     )
+
+    CORS_ORIGIN_REGEX: str | None = r"https://.*\.netlify\.app"
 
     SEED_DEMO_DATA: bool = True
 
