@@ -2,6 +2,7 @@
 -- Run once to initialise the database.
 
 -- Drop tables in dependency order
+DROP TABLE IF EXISTS gallery CASCADE;
 DROP TABLE IF EXISTS contact_messages CASCADE;
 DROP TABLE IF EXISTS bookings CASCADE;
 DROP TABLE IF EXISTS events CASCADE;
@@ -61,6 +62,16 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
 
+CREATE TABLE IF NOT EXISTS gallery (
+    id          SERIAL PRIMARY KEY,
+    event_id    INTEGER          REFERENCES events (id) ON DELETE SET NULL,
+    image_url   VARCHAR(500)     NOT NULL,
+    caption     VARCHAR(255),
+    created_at  TIMESTAMP        NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_gallery_event_id ON gallery (event_id);
+
 -- Seed demo events (skip if already present)
 INSERT INTO events (title, description, category, date, location, price, inclusions, image_url)
 SELECT * FROM (VALUES
@@ -119,3 +130,17 @@ SELECT * FROM (VALUES
    '/images/events/concert-comedy.svg')
 ) AS v(title, description, category, date, location, price, inclusions, image_url)
 WHERE NOT EXISTS (SELECT 1 FROM events LIMIT 1);
+
+-- Seed demo gallery images (skip if already present)
+INSERT INTO gallery (event_id, image_url, caption)
+SELECT * FROM (VALUES
+  (1, '/images/gallery/mandap.svg', 'Traditional Floral Mandap & Stage Decor'),
+  (1, '/images/gallery/reception-hall.svg', 'Grand Palace Banquet Hall Reception'),
+  (4, '/images/gallery/keynote.svg', 'Tech Innovators Keynote Stage Setup'),
+  (4, '/images/gallery/conference-seating.svg', 'Executive Conference Hall Seating'),
+  (6, '/images/gallery/cake.svg', 'Artisan Tiered Celebration Cake'),
+  (7, '/images/gallery/outdoor-party.svg', 'Lawn Garden Birthday Celebration'),
+  (8, '/images/gallery/stage-lights.svg', 'Festival Main Stage Audio & Lighting'),
+  (8, '/images/gallery/crowd.svg', 'Music Festival Live Audience')
+) AS g(event_id, image_url, caption)
+WHERE NOT EXISTS (SELECT 1 FROM gallery LIMIT 1);
