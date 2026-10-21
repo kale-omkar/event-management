@@ -81,10 +81,55 @@ function validate(field, values) {
   }
 }
 
+// Map service names from the home page to event types in the booking form
+const SERVICE_TO_EVENT_TYPE = {
+  'Wedding Planning': 'Wedding',
+  'Corporate Events': 'Corporate',
+  'Birthday Parties': 'Birthday',
+  'Live Music & Concerts': 'Concert',
+  'Catering & Decor': 'Other',
+  'Photo & Video': 'Other',
+}
+
+// Service metadata shown in the booking sidebar
+const SERVICE_SIDEBAR_META = {
+  'Wedding Planning': {
+    image: '/images/services/wedding-planning.svg',
+    price: 150000,
+    tagline: 'End-to-end planning across venues, decor and catering.',
+  },
+  'Corporate Events': {
+    image: '/images/services/corporate-events.svg',
+    price: 75000,
+    tagline: 'Conferences, kickoffs and award nights, run to the minute.',
+  },
+  'Birthday Parties': {
+    image: '/images/services/birthday-parties.svg',
+    price: 25000,
+    tagline: 'Milestone birthdays and kids parties, indoors or out.',
+  },
+  'Live Music & Concerts': {
+    image: '/images/services/live-music.svg',
+    price: 9999,
+    tagline: 'Artist booking, sound & lighting, crowd management.',
+  },
+  'Catering & Decor': {
+    image: '/images/services/catering-decor.svg',
+    price: 40000,
+    tagline: 'Custom menus, themed decor and live counters.',
+  },
+  'Photo & Video': {
+    image: '/images/services/photo-video.svg',
+    price: 35000,
+    tagline: 'Candid photography, highlight films and same-day edits.',
+  },
+}
+
 export default function Booking() {
   const toast = useToast()
   const [searchParams] = useSearchParams()
   const eventId = searchParams.get('event')
+  const serviceParam = searchParams.get('service')
 
   const [values, setValues] = useState(EMPTY)
   const [errors, setErrors] = useState({})
@@ -106,8 +151,13 @@ export default function Booking() {
     )
   }, [selectedEvent?.category])
 
+  const typeFromService = useMemo(() => {
+    if (!serviceParam) return null
+    return SERVICE_TO_EVENT_TYPE[serviceParam] ?? null
+  }, [serviceParam])
+
   const [userType, setUserType] = useState(null)
-  const eventType = userType ?? typeFromEvent ?? values.event_type
+  const eventType = userType ?? typeFromEvent ?? typeFromService ?? values.event_type
 
   const minDate = useMemo(() => today(), [])
 
@@ -532,6 +582,33 @@ export default function Booking() {
 
                   <Link to={`/events/${selectedEvent.id}`} className="detail-back">
                     View full details
+                  </Link>
+                </>
+              ) : serviceParam && SERVICE_SIDEBAR_META[serviceParam] ? (
+                <>
+                  <p className="booking-card-label">Enquiring about</p>
+
+                  <SmartImage
+                    src={SERVICE_SIDEBAR_META[serviceParam].image}
+                    alt={serviceParam}
+                    ratio="16 / 9"
+                    className="booking-card-image"
+                    eager
+                  />
+
+                  <h3 className="booking-card-title">{serviceParam}</h3>
+
+                  <p className="text-muted text-sm">
+                    {SERVICE_SIDEBAR_META[serviceParam].tagline}
+                  </p>
+
+                  <p className="booking-card-price">
+                    From{' '}
+                    <strong>{formatPrice(SERVICE_SIDEBAR_META[serviceParam].price)}</strong>
+                  </p>
+
+                  <Link to="/services" className="detail-back">
+                    View all services
                   </Link>
                 </>
               ) : (

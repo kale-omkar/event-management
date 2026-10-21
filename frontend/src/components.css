@@ -982,6 +982,21 @@
   }
 }
 
+.service-card-link {
+  display: block;
+  color: inherit;
+  height: 100%;
+}
+
+.service-card-link:hover {
+  color: inherit;
+}
+
+.service-card-link:hover .card {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
 .service-card {
   height: 100%;
   display: flex;

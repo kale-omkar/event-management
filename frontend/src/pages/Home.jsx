@@ -41,8 +41,6 @@ const STATS = [
 export default function Home() {
   const toast = useToast()
 
-  const { data: health, error: healthError } = useFetch('/api/health')
-
   const {
     data: eventsData,
     error: eventsError,
@@ -109,17 +107,6 @@ export default function Home() {
               View Events
             </Link>
           </motion.div>
-
-          <motion.p
-            className="hero-status"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            {healthError
-              ? 'API offline — showing cached content'
-              : `API ${health?.status ?? 'checking'}${health?.database ? ` · database ${health.database}` : ''}`}
-          </motion.p>
         </div>
       </section>
 
@@ -155,21 +142,26 @@ export default function Home() {
           <div className="service-grid">
             {SERVICES.map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 0.1}>
-                <article className="card card-hover service-card">
-                  <SmartImage
-                    src={service.image}
-                    alt={service.title}
-                    ratio="16 / 9"
-                    className="service-card-image"
-                  />
-                  <div className="service-card-body">
-                    <h3>{service.title}</h3>
-                    <p className="text-muted">{service.text}</p>
-                    <p className="service-card-price">
-                      From <strong>{formatPrice(service.price)}</strong>
-                    </p>
-                  </div>
-                </article>
+                <Link
+                  to={`/booking?service=${encodeURIComponent(service.title)}`}
+                  className="service-card-link"
+                >
+                  <article className="card card-hover service-card">
+                    <SmartImage
+                      src={service.image}
+                      alt={service.title}
+                      ratio="16 / 9"
+                      className="service-card-image"
+                    />
+                    <div className="service-card-body">
+                      <h3>{service.title}</h3>
+                      <p className="text-muted">{service.text}</p>
+                      <p className="service-card-price">
+                        From <strong>{formatPrice(service.price)}</strong>
+                      </p>
+                    </div>
+                  </article>
+                </Link>
               </ScrollReveal>
             ))}
           </div>
