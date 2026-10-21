@@ -9,8 +9,8 @@ import {
   FiMail,
   FiMapPin,
   FiPhone,
-  FiTwitter,
 } from 'react-icons/fi'
+import { FaXTwitter } from 'react-icons/fa6'
 import { useState } from 'react'
 
 import useToast from '../components/useToast'
@@ -77,7 +77,7 @@ const CHANNELS = [
 const SOCIALS = [
   { href: 'https://instagram.com', label: 'Instagram', Icon: FiInstagram },
   { href: 'https://facebook.com', label: 'Facebook', Icon: FiFacebook },
-  { href: 'https://twitter.com', label: 'Twitter', Icon: FiTwitter },
+  { href: 'https://x.com', label: 'X', Icon: FaXTwitter },
   { href: 'https://linkedin.com', label: 'LinkedIn', Icon: FiLinkedin },
 ]
 

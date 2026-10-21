@@ -1,15 +1,15 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { FiLogIn, FiLogOut, FiMenu, FiUser, FiX } from 'react-icons/fi'
+import { FiLogIn, FiLogOut, FiMenu, FiX } from 'react-icons/fi'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const LINKS = [
   { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
   { to: '/services', label: 'Services' },
   { to: '/events', label: 'Events' },
   { to: '/gallery', label: 'Gallery' },
+  { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -71,6 +71,10 @@ export default function Navbar() {
           </nav>
 
           <div className="navbar-actions">
+            <Link to="/booking" className="btn btn-primary btn-sm navbar-cta">
+              Book Now
+            </Link>
+
             {isAuthenticated ? (
               <div className="navbar-user-menu">
                 <div className="navbar-user-pill" title={user?.email || 'Logged in'}>
@@ -103,10 +107,6 @@ export default function Navbar() {
                 </Link>
               </div>
             )}
-
-            <Link to="/booking" className="btn btn-primary btn-sm navbar-cta">
-              Book Now
-            </Link>
 
             <button
               type="button"
@@ -161,35 +161,6 @@ export default function Navbar() {
                 </button>
               </div>
 
-              {isAuthenticated ? (
-                <div className="drawer-user-card">
-                  <div className="drawer-avatar">
-                    {user?.full_name ? user.full_name.trim().charAt(0).toUpperCase() : 'U'}
-                  </div>
-                  <div className="drawer-user-meta">
-                    <p className="drawer-user-fullname">{user?.full_name}</p>
-                    <p className="drawer-user-email">{user?.email}</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="drawer-auth-buttons">
-                  <Link
-                    to="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className="btn btn-outline btn-block"
-                  >
-                    <FiLogIn style={{ marginRight: 8 }} /> Login
-                  </Link>
-                  <Link
-                    to="/signup"
-                    onClick={() => setMenuOpen(false)}
-                    className="btn btn-primary btn-block"
-                  >
-                    Create Account
-                  </Link>
-                </div>
-              )}
-
               <div className="drawer-links-list">
                 {LINKS.map(({ to, label }, index) => (
                   <motion.div
@@ -210,21 +181,53 @@ export default function Navbar() {
               </div>
 
               <div className="drawer-footer-actions">
-                <Link to="/booking" className="btn btn-primary btn-block drawer-cta">
+                <Link
+                  to="/booking"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn btn-primary btn-block drawer-cta"
+                >
                   Book Now
                 </Link>
 
-                {isAuthenticated && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      logout()
-                      setMenuOpen(false)
-                    }}
-                    className="btn btn-ghost btn-block drawer-logout-btn"
-                  >
-                    <FiLogOut style={{ marginRight: 8 }} /> Sign Out
-                  </button>
+                {isAuthenticated ? (
+                  <>
+                    <div className="drawer-user-card">
+                      <div className="drawer-avatar">
+                        {user?.full_name ? user.full_name.trim().charAt(0).toUpperCase() : 'U'}
+                      </div>
+                      <div className="drawer-user-meta">
+                        <p className="drawer-user-fullname">{user?.full_name}</p>
+                        <p className="drawer-user-email">{user?.email}</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logout()
+                        setMenuOpen(false)
+                      }}
+                      className="btn btn-ghost btn-block drawer-logout-btn"
+                    >
+                      <FiLogOut style={{ marginRight: 8 }} /> Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <div className="drawer-auth-buttons">
+                    <Link
+                      to="/login"
+                      onClick={() => setMenuOpen(false)}
+                      className="btn btn-outline btn-block"
+                    >
+                      <FiLogIn style={{ marginRight: 8 }} /> Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={() => setMenuOpen(false)}
+                      className="btn btn-ghost btn-block"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
                 )}
               </div>
             </motion.nav>

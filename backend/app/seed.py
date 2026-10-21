@@ -6,6 +6,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.event import Event
+from app.models.gallery import Gallery
 from app.models.service import Service
 
 SEED_EVENTS = [
@@ -179,6 +180,49 @@ SEED_SERVICES = [
     },
 ]
 
+SEED_GALLERY = [
+    {
+        "image_url": "/images/gallery/mandap.svg",
+        "caption": "Traditional Floral Mandap & Stage Decor",
+        "event_id": 1,
+    },
+    {
+        "image_url": "/images/gallery/reception-hall.svg",
+        "caption": "Grand Palace Banquet Hall Reception",
+        "event_id": 1,
+    },
+    {
+        "image_url": "/images/gallery/keynote.svg",
+        "caption": "Tech Innovators Keynote Stage Setup",
+        "event_id": 4,
+    },
+    {
+        "image_url": "/images/gallery/conference-seating.svg",
+        "caption": "Executive Conference Hall Seating",
+        "event_id": 4,
+    },
+    {
+        "image_url": "/images/gallery/cake.svg",
+        "caption": "Artisan Tiered Celebration Cake",
+        "event_id": 6,
+    },
+    {
+        "image_url": "/images/gallery/outdoor-party.svg",
+        "caption": "Lawn Garden Birthday Celebration",
+        "event_id": 7,
+    },
+    {
+        "image_url": "/images/gallery/stage-lights.svg",
+        "caption": "Festival Main Stage Audio & Lighting",
+        "event_id": 8,
+    },
+    {
+        "image_url": "/images/gallery/crowd.svg",
+        "caption": "Music Festival Live Audience",
+        "event_id": 8,
+    },
+]
+
 def seed_if_empty(db: Session) -> int:
     
     inserted = 0
@@ -204,6 +248,17 @@ def seed_if_empty(db: Session) -> int:
             ]
         )
         inserted += len(SEED_SERVICES)
+
+    existing_gallery = db.scalar(select(func.count()).select_from(Gallery))
+
+    if not existing_gallery:
+        db.add_all(
+            [
+                Gallery(id=index, **row)
+                for index, row in enumerate(SEED_GALLERY, start=1)
+            ]
+        )
+        inserted += len(SEED_GALLERY)
 
     if inserted:
         db.commit()

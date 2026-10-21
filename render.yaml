@@ -1,0 +1,49 @@
+# Render.com deployment configuration
+# Docs: https://render.com/docs/yaml-spec
+#
+# How to deploy:
+#   1. Push this repo to GitHub / GitLab.
+#   2. Go to https://dashboard.render.com → New → Blueprint.
+#   3. Connect your repo. Render will read this file automatically.
+#   4. Set the secret environment variables listed below under "sync: false"
+#      in the Render dashboard (Environment tab of the service).
+
+services:
+  - type: web
+    name: event-management-api
+    runtime: python
+    region: singapore          # closest to your Neon ap-southeast-1 DB
+    plan: free                 # upgrade to Starter ($7/mo) to avoid spin-down
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+
+    envVars:
+      # ── Secrets: set these in the Render dashboard (not committed to git) ──
+      - key: DATABASE_URL
+        sync: false            # paste your Neon connection string in the dashboard
+
+      - key: JWT_SECRET_KEY
+        generateValue: true    # Render auto-generates a secure random value
+
+      # ── Non-secret config ──
+      - key: CORS_ORIGINS
+        value: https://event-management-ws.netlify.app,https://6ad874e747faab7c8cce7a13--event-management-ws.netlify.app,https://6accbbe5857de18ee0184e88--event-management-ws.netlify.app,http://localhost:5173,http://127.0.0.1:5173
+        # Backend: https://event-management-moui.onrender.com
+        # Frontend: https://event-management-ws.netlify.app
+
+      - key: CORS_ORIGIN_REGEX
+        value: "https://.*\\.netlify\\.app"
+
+      - key: SEED_DEMO_DATA
+        value: "true"
+
+      - key: JWT_ALGORITHM
+        value: HS256
+
+      - key: JWT_EXPIRE_MINUTES
+        value: "1440"
+
+      - key: PYTHON_VERSION
+        value: "3.11.9"

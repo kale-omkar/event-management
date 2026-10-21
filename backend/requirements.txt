@@ -1,8 +1,7 @@
 fastapi
 uvicorn[standard]
 sqlalchemy
-pymysql
-cryptography
+psycopg[binary]
 python-dotenv
 pydantic
 pydantic-settings
@@ -11,4 +10,4 @@ email-validator
 # Auth
 passlib[bcrypt]
 python-jose[cryptography]
-bcrypt
+bcrypt==4.0.1

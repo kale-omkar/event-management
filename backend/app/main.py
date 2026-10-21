@@ -51,6 +51,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origin_list,
+    allow_origin_regex=settings.CORS_ORIGIN_REGEX or None,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -79,10 +80,9 @@ async def handle_database_error(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
         content={
             "detail": (
-                "Could not reach the database. Check that MySQL is running "
-                "and that DB_HOST, DB_PORT, DB_USER, DB_PASSWORD and DB_NAME "
-                "in backend/.env are correct, and that the database was "
-                "created from database/schema.sql."
+                "Could not reach the database. Check that DATABASE_URL "
+                "in backend/.env points to a valid PostgreSQL / Neon instance "
+                "and that the schema has been applied."
             )
         },
     )

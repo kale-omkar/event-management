@@ -205,10 +205,13 @@ export default function Events() {
   }, [visibleEvents])
 
   const allGalleryImages = useMemo(() => {
-    
+    if (Array.isArray(galleryData)) {
+      return galleryData
+    }
     return (
       galleryData?.gallery ??
       galleryData?.images ??
+      galleryData?.data ??
       []
     )
   }, [galleryData])
